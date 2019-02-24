@@ -1,0 +1,10 @@
+tutorial
+- apt upgrade && update
+- apt install python2
+- apt install python-pip
+jika pip belum update
+	-pip2 install --upgrade pip
+- pip2 install request
+- cd web_dav
+- python webdav.py
+
