@@ -3,7 +3,14 @@ import sys
 import os
 import string
 import time
-banner = ''' __     __ _____ _____  _____  _____ _   _
+
+# colors
+
+m = '\033[91;1m'
+h = '\033[92;1m'
+k = '\033[93;1m'
+
+banner = h+''' __     __ _____ _____  _____  _____ _   _
 |  | ^ |  |  ___|     \|  _  \|  _  | | | |
 |  |/ \|  | |___|  @  /| | |  | | | | | | |
 |    ^    | |___|  @  \| |_|  |  _  \ |_| /
@@ -20,7 +27,7 @@ banner = ''' __     __ _____ _____  _____  _____ _   _
 |nick		: aku bukan hacker jadi ga punya nick |
 |_____________________________________________________|
 
-Examples : python2 webdav.py http://www.webdav.com /sdcard/index.html
+\033[93;1mExamples : python2 webdav.py http://www.webdav.com /sdcard/index.html
 '''
 os.system('clear')
 print banner
@@ -32,7 +39,7 @@ def progress(param):
 		len 	= int(round(bar * (i + 1) / float(total)))
 		line 	= '#'*len + '=' * (bar - len)
 		precent = round(100.0 * (i + 1) / float(total), 2)
-		print '\r'+param+' : [%s] %s Completed' % (line, precent)
+		print '\r'+m+param+h+' : [%s] %s Completed' % (line, precent)
 		sys.stdout.flush()
 		time.sleep(0.09)
 def check():
@@ -41,13 +48,14 @@ def check():
 	target 	= url+file
 	if not url.startswith('http'):
 		target = 'http://'+target
-	print "[*] Checking on target : "+target
+	print m+"[*] "+h+"Checking on target : "+target+'...'
+	time.sleep(1)
 	progress('Checking')
 	os.system('clear')
 	print banner
 	req	= requests.get(target)
 	if req.status_code == 200:
-		print '[*] File yang anda masukan sudah ada/ada file yang sama'
+		print '['+m+'*'+h+'] File yang anda masukan sudah ada/ada file yang sama'
 		confirm = raw_input('Apakah anda ingin mengganti script [y/n] : ')
 		if confirm == 'y' or confirm == 'Y':
 			print ' '
@@ -77,5 +85,13 @@ def execute():
 		print 'check on : '+target
 	else:
 		print '[*] IPloading Lose...........'
-check()
-
+try:
+	if len(sys.argv) != 3:
+		os.system('clear')
+		print banner
+	else:
+		check()
+except requests.ConnectionError, e:
+	os.system('clear')
+	print banner
+	print m+"[*]"+h+" nothing connection to internet....."
